@@ -1,0 +1,35 @@
+language: android
+jdk:
+    - oraclejdk7
+    - oraclejdk8
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-22.0.1
+    - android-22
+    - build-tools-23.0.1
+    - android-23
+    - extra-android-support
+    - extra-android-m2repository
+before_install:
+    - export JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+    - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+    - export JAVA_HOME=$JAVA8_HOME
+script:
+    - ./gradlew clean assemble check
+after_success:
+    - ./gradlew coveralls
+
+# as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
+sudo: false
+
+addons:
+  sonarqube:
+    token:
+      secure: "Mw9J7StLxZgfwATmDHe2jVhn7mMMib/x8ODu3JJT/aC7UhNpweniIVBuv9SzTsbPUi60UO+BQzgVjeBQJa+OQsFkCfgaihGmRnscoUDqA55zCIz1bik62uGNBRyUhjPHXRM1q9QW76zzOsibFfZI6hbDFk8E29jD7MxF93ujwWurc/I/DXf19AP6ZhMdVrBmg7PbsQR6aQC6JSGu0my+ERgq9LvyWD8vcbpCqnQumC/JYOZQ1le+uIzNGEJgIO6yQ7aMFYSgGXv8mhj8OyVK6yMTeDcmiV0umzPExdhiCUkrB5t0/SivaxrxZmHvQAnKr6MsWuhupIEERH8j82z2F4Fyv7Y0PQSwJlARw4PoI9wxaV49wfSoAj47kh057pLaCu/z1ZFqzQKnxSd1LwFPyiqjx7rHmFsmWTQt5T8rn5BA4xnel+tj4yoaBRj8EI3gouUhRdN+091CnvLMoYUdK7NWMoR193LRgSkwqcfI3TB1cWi+sFzLnrKgMnA2ZGMwoJEfus21uFP4cSKpovXZr2wwngF4PdeSfo5o9xlyYDrwx/zldI2lVoFgpVES7FsNHgSkm2nwM0RSVg0WkhYm8khOfyUeViNSYch4MgUPddLvyeCjKvMnoCOnRBVUCvJNlPZ9ASI6jXFNAJrhwGwVzB5XanC6GIE6PvSu43AKh6w="
+    github_token:
+      secure: "l74e4BgRBYchXBHGvKUfRpA77i8luQhHQY/y5QyTG5Hvo30fpbSCwzVMBVwnJ6Gi7gwRCS1lEojjeRgazay5Izn3PRHrEkEQDX4+lmoC1UR7i5nSRTpYvqO0nHsn9tlmCPiByh7PQle1By6xWtp1dvUH+TkAWTmsXQxJoaxNcxCa9NCruSuzaahNbXn6JvWBxKiJIKzGZnoPVW9W4u4knetCu/II4nGUWBoDm/mQ11H9GYYBkVx3lVjT0t5LdPF+UAKpmHjF6Hp/N5UknzLmABHzKJoNY6g3/I7Rv9dakAF4m9JgM4182xyu1y2D2M70Yb9zjcWWM4YD8o6yES0b6d+29ovGHWJ6uo0B9/RJOnrKSEk2l9iiYcUd/eWmUovLk/hfVYcMKyYgs0/VOProYm5kmv7ZCEGC3WT0sR2kOrqzZ23QdqGhep/qZTnMcg23y99loYXyVitHOOEDiiW8v9faCYcjTRT+3WKiwBT6XNghtiMqA0VDk1BUu/nKHmLxNHfyLyomoqT2+iAMQ7EmMPzP4bwhieQ+/mBDXU1BvEzLnExRSSmgSrg5lRibzEvsbDHNB5y9zF1zri5CXnKSiLEBURQaSnM+E+j/XtMXIdkdUFYhJOb6PMksL+gfWqAr/S1bk1a10wVWmmNJkbz9gGAZWhKJZvq618hKhsmEvWg="
+script:
+  # other script steps might be done before running the actual SonarQube analysis
+  - sonar-scanner
