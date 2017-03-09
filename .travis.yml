@@ -1,0 +1,35 @@
+language: android
+jdk:
+    - oraclejdk7
+    - oraclejdk8
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-22.0.1
+    - android-22
+    - build-tools-23.0.1
+    - android-23
+    - extra-android-support
+    - extra-android-m2repository
+before_install:
+    - export JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+    - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+    - export JAVA_HOME=$JAVA8_HOME
+script:
+    - ./gradlew clean assemble check
+after_success:
+    - ./gradlew coveralls
+
+# as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
+sudo: false
+
+addons:
+  sonarqube:
+    token:
+      secure: "e942dbfc2fe6604457de36d3977be524b4a045f9"
+    github_token:
+      secure: "dd68d01c4707e7583bb9f5c3cd97e2bafcbe00e5"
+script:
+  # other script steps might be done before running the actual SonarQube analysis
+  - sonar-scanner
