@@ -1,0 +1,5 @@
+_site
+.idea
+Gemfile
+Gemfile.lock
+works-controller-android.gh-pages.iml
